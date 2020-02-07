@@ -27,7 +27,7 @@ export const App = (props) => {
 };
 
 export const GetImage = (props) => {
-  return props.src ? <div><img src={props.src}/></div> : '';
+  return props.src ? <div><img src={props.src} alt='No image'/></div> : '';
 }
 
 export const GetDocument = (props) => {

@@ -5,7 +5,7 @@ const api = axios.create({
 });
 
 let documentName = 'pokemon';
-export const getAllDocuments = () => api.get(`/${documentName}`);
+export const getAllDocuments = (offset) => api.get(`/${documentName}?offset=${offset}&limit=20`);
 export const getDocument = (name) => api.get(`/${documentName}/${name}`);
 
 export default {

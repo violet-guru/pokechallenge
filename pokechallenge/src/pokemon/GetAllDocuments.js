@@ -10,27 +10,101 @@ import TableBody from "@material-ui/core/TableBody";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import {GetImage} from "./App";
+import TablePagination from "@material-ui/core/TablePagination";
+import TableFooter from "@material-ui/core/TableFooter";
+import IconButton from "@material-ui/core/IconButton";
+import {KeyboardArrowLeft, KeyboardArrowRight, FirstPage, LastPage} from "@material-ui/icons";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+
+const pageStyles = makeStyles(theme => ({
+  root: {
+    flexShrink: 0,
+    marginLeft: theme.spacing(2.5),
+  },
+}));
+
+const TablePaginationActions = props => {
+  const classes = pageStyles();
+  const {count, page, rowsPerPage, onChangePage} = props;
+
+  const handleFirstPageButtonClick = event => {
+    onChangePage(event, 0);
+  };
+
+  const handleBackButtonClick = event => {
+    onChangePage(event, page - 1);
+  };
+
+  const handleNextButtonClick = event => {
+    onChangePage(event, page + 1);
+  };
+
+  const handleLastPageButtonClick = event => {
+    onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
+  };
+
+  return (
+    <div className={classes.root}>
+      <IconButton
+        onClick={handleFirstPageButtonClick}
+        disabled={page === 0}
+      >
+        <FirstPage/>
+      </IconButton>
+      <IconButton onClick={handleBackButtonClick} disabled={page === 0}>
+        <KeyboardArrowLeft/>
+      </IconButton>
+      <IconButton
+        onClick={handleNextButtonClick}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+      >
+        <KeyboardArrowRight/>
+      </IconButton>
+      <IconButton
+        onClick={handleLastPageButtonClick}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+      >
+        <LastPage/>
+      </IconButton>
+    </div>
+  );
+};
 
 const GetAllDocuments = (props) => {
   const [state, setState] = useState([]);
-  let isLoaded = useRef(false);
+  const [countState, setCountState] = useState(0);
+  const [pageState, setPageState] = useState(0);
 
-  if (!isLoaded.current) {
-    Api.getAllDocuments()
+  let isLoaded = useRef(false);
+  const rowsPerPage = 20;
+
+  const handleChangePage = (event, newPage) => {
+    console.log(newPage);
+    GetDocuments(newPage * rowsPerPage);
+    setPageState(newPage);
+  };
+
+  const GetDocuments = offset => {
+    Api.getAllDocuments(offset)
       .then(({data}) => {
         console.log(data);
         setState(data.results);
+        setCountState(data.count);
       })
       .catch((error) => {
         HandleError(error);
       });
+  };
 
+  if (!isLoaded.current) {
+    GetDocuments(0);
     isLoaded.current = true;
   }
 
   return (
     <>
       <Typography variant="h5" gutterBottom>Pokemon List</Typography>
+      <p>Pagination at the bottom</p>
       <Table stickyHeader>
         <TableHead>
           <TableRow>
@@ -51,6 +125,19 @@ const GetAllDocuments = (props) => {
             </TableRow>
           ))}
         </TableBody>
+        <TableFooter>
+          <TableRow>
+            <TablePagination
+              rowsPerPageOptions={[rowsPerPage]}
+              colSpan={3}
+              count={countState}
+              rowsPerPage={rowsPerPage}
+              page={pageState}
+              onChangePage={handleChangePage}
+              ActionsComponent={TablePaginationActions}
+            />
+          </TableRow>
+        </TableFooter>
       </Table></>
   );
 };
