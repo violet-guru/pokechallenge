@@ -3,7 +3,7 @@ import React from 'react';
 import GetDocument from "./GetDocument";
 import {render, fireEvent, screen} from '@testing-library/react';
 
-it('retrieves document, change data, then update document', async () => {
+it('retrieves document, then check document', async () => {
   //Arrange
   const fakeUpdate = jest.fn((id, payLoad) => Promise.resolve({}));
 
