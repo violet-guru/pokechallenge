@@ -4,9 +4,13 @@ exports[`retrieves document, change data, then update document 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    <div />
+    <div>
+      'No data' 
+    </div>
   </body>,
-  "container": <div />,
+  "container": <div>
+    'No data' 
+  </div>,
   "debug": [Function],
   "findAllByAltText": [Function],
   "findAllByDisplayValue": [Function],

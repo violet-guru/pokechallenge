@@ -1,3 +1,4 @@
+//tests made with JEST, using JEST snapshots
 import React from 'react';
 import GetDocument from "./GetDocument";
 import {render, fireEvent, screen} from '@testing-library/react';
@@ -8,7 +9,7 @@ it('retrieves document, change data, then update document', async () => {
 
   //Act
   const allTest = render(<GetDocument getDocument={fakeUpdate}/>);
-  await screen.findByText(/abilities/i);
+  await screen.findByText(/No data/i);
 
   //Assert
   expect(allTest).toMatchSnapshot();
@@ -21,7 +22,7 @@ it('has empty props', () => {
 
   //Act
   render(<GetDocument />);
-  let submit = screen.getByText(/abilities/i);
+  let submit = screen.getByText(/no data/i);
 
 
   //Assert
