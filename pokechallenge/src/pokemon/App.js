@@ -26,6 +26,10 @@ export const App = (props) => {
   );
 };
 
+export const GetImage = (props) => {
+  return props.src ? <div><img src={props.src}/></div> : '';
+}
+
 export const GetDocument = (props) => {
   const [detailState, setDetailState] = useState({});
   let isLoaded = useRef(false);
@@ -52,16 +56,16 @@ export const GetDocument = (props) => {
     return <>
       <Button component={Link} to={`/`} variant="outlined">Pokemon List</Button>
       <Typography variant="h6">Name</Typography>
-      <div>{detailState.name}</div>
+      <div>{detailState.name.charAt(0).toUpperCase() + detailState.name.slice(1)}</div>
       <Typography variant="h6">Sprites</Typography>
-      {detailState.sprites.front_default ? <div><img src={detailState.sprites.front_default}/></div> : ''}
-      {detailState.sprites.back_default ? <div><img src={detailState.sprites.back_default}/></div> : ''}
-      {detailState.sprites.back_female ? <div><img src={detailState.sprites.back_female}/></div> : ''}
-      {detailState.sprites.back_shiny ? <div><img src={detailState.sprites.back_shiny}/></div> : ''}
-      {detailState.sprites.back_shiny_female ? <div><img src={detailState.sprites.back_shiny_female}/></div> : ''}
-      {detailState.sprites.front_female ? <div><img src={detailState.sprites.front_female}/></div> : ''}
-      {detailState.sprites.front_shiny ? <div><img src={detailState.sprites.front_shiny}/></div> : ''}
-      {detailState.sprites.front_shiny_female ? <div><img src={detailState.sprites.front_shiny_female}/></div> : ''}
+      <GetImage src={detailState.sprites.front_default}/>
+      <GetImage src={detailState.sprites.back_default}/>
+      <GetImage src={detailState.sprites.back_female}/>
+      <GetImage src={detailState.sprites.back_shiny}/>
+      <GetImage src={detailState.sprites.back_shiny_female}/>
+      <GetImage src={detailState.sprites.front_female}/>
+      <GetImage src={detailState.sprites.front_shiny}/>
+      <GetImage src={detailState.sprites.front_shiny_female}/>
       <Typography variant="h6"> Abilities</Typography>
       {detailState.abilities.map(({ability, is_hidden, slot}, index) =>
         <div key={index}>
@@ -92,14 +96,13 @@ export const GetDocument = (props) => {
         <div key={index}>
           Name: {stat.name}, Base stat: {base_stat}, Effort: {effort}
         </div>)}
-
       <Typography variant="h6">Types</Typography>
       {detailState.types.map(({type}) => type.name).join(", ")}
       <Typography variant="h6">Weight</Typography>
       <div>{detailState.weight}</div>
     </>
   }
-}
+};
 
 
 
